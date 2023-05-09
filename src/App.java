@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 /**
  * This program is an airline reservation simulator
  *
@@ -10,7 +8,8 @@ import java.io.IOException;
 
 public class App {
     public static void main(String[] args) {
-
+        Admin admin = new Admin();
+        admin.addFlight();
     }
 
 }

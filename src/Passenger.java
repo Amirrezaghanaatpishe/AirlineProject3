@@ -1,6 +1,7 @@
-import java.io.IOException;
 
 public class Passenger {
+
+    //----------Passenger Menu
     private void menu(){
         System.out.println("*****************************\n\tPassenger MENU OPTION\n*****************************\n\t(1) Change password \n\t(2) Search flight ticket\n\t(3) Booking ticket\n\t(4) Ticket cancellation\n\t(5) Booked tickets\n\t(6) Add charge\n\t(0) Sign out" );
     }

@@ -1,7 +1,6 @@
-import java.io.IOException;
 
 public class RunIn {
-    //----------------First menu methods
+    //----------First menu
     private void menu(){
         System.out.println("********************************************\n\tWELCOME TO AIRLINE RESERVATION SYSTEM\n********************************************\n\t(1) Sign in\n\t(2) Sign up" );
     }

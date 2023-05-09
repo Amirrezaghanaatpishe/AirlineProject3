@@ -1,13 +1,16 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Include useful methods
+ */
 public class Tools {
-    //--------Tools
 
-    //Scanner
+
+    //----------Scanner
     public static Scanner input = new Scanner(System.in);
 
-    //--------Clear
+    //----------Clear
     public static void cls()  {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -16,6 +19,13 @@ public class Tools {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //----------Pause
+    public static void pause()  {
+        System.out.println("Press Any Key To Continue...");
+        input.nextLine();
+        cls();
     }
 }
 
