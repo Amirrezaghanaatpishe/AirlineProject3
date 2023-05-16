@@ -314,4 +314,3 @@ public class Passenger extends User {
         } while (num != 0);
     }
 }
-

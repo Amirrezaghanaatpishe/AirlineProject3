@@ -44,6 +44,3 @@ public class Tools {
         return B = A == 0;
     }
 }
-
-
-

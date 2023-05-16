@@ -113,18 +113,24 @@ public class Account {
     }
 
     //----------Sign Up
-    private void signUp() {
+    private void signUp() throws IOException {
         Tools.cls();
-        System.out.print("Enter username :");
+        System.out.print("Enter username (your username must be less than ten char) :");
         int flag;
         String userName;
         do {
             flag = 1;
             userName = Tools.input.next();
+            if (userName.length() > 10) {
+                Tools.cls();
+                System.out.print(ColorMethods.RED_BOLD + "Use another name :" + ColorMethods.RESET);
+                flag = 0;
+            }
             if (Tools.stringCheck(userName))
                 return;
-            for (int i = 0; i < passengers.size(); i++) {
-                if (passengers.get(i).getId().equals(userName)) {
+            for (int i = 0; i < (passengerFile.length() / 52); i++) {
+
+                if (readString(4 + (52 * i)).equals(userName)) {
                     Tools.cls();
                     System.out.print(ColorMethods.RED_BOLD + "Use another name :" + ColorMethods.RESET);
                     flag = 0;
@@ -136,8 +142,15 @@ public class Account {
         String password = Tools.input.next();
         if (Tools.stringCheck(password))
             return;
-        Passenger passenger = new Passenger(userName, password);
-        passengers.add(passenger);
+        passengerFile.seek(passengerFile.length() - 52);
+        int number = passengerFile.readInt();
+        passengerFile.seek(passengerFile.length());
+        passengerFile.writeInt(number + 1);
+        passengerFile.writeChars(fixStringToWrite(userName));
+        passengerFile.writeChars(fixStringToWrite(password));
+        passengerFile.writeDouble(0);
+        String fileName = "DataBase\\PassengersTickets\\passenger" + String.valueOf(number + 1) + ".dat";
+        RandomAccessFile ticket = new RandomAccessFile(fileName, "rw");
     }
 
     //----------Sign
@@ -153,7 +166,11 @@ public class Account {
                     signIn();
                     break;
                 case 2:
-                    signUp();
+                    try {
+                        signUp();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 default:
                     break;
