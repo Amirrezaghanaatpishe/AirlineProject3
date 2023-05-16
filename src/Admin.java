@@ -1,10 +1,9 @@
-import java.util.ArrayList;
-import java.util.Locale;
 
-public class Admin {
-    private String adminId;
-    private String password;
-    private static ArrayList<Flight> flights = new ArrayList<Flight>();
+public class Admin extends User {
+
+    public Admin(String id, String password) {
+        super(id, password);
+    }
 
     //----------Methods
 
@@ -262,6 +261,7 @@ public class Admin {
         flights.set(num - 1, flight);
     }
 
+    //----------REMOVE
     private void remove() {
         int N;
         do {
@@ -286,7 +286,7 @@ public class Admin {
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
             if (num == 1)
-                flights.remove(N-1);
+                flights.remove(N - 1);
         } while (true);
 
     }
@@ -321,4 +321,6 @@ public class Admin {
             }
         } while (num != 0);
     }
+
+
 }

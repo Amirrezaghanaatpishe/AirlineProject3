@@ -8,8 +8,10 @@
 
 public class App {
     public static void main(String[] args) {
-        Admin admin = new Admin();
-        admin.adminTask();
-    }
 
+        System.out.println(ColorMethods.RED_BOLD + "sssss" + ColorMethods.RESET);
+        Passenger passenger = new Passenger("aaa", "aaaa");
+
+    }
 }
+

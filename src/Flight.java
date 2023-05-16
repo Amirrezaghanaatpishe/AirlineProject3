@@ -9,6 +9,10 @@ public class Flight {
     private double price;
     private int seat;
 
+    public String getDestination() {
+        return destination;
+    }
+
     public Flight(String flightId, String origin, String destination, int year, int month, int day, String time, double price, int seat) {
         this.flightId = flightId;
         this.origin = origin;
@@ -71,6 +75,17 @@ public class Flight {
         return seat;
     }
 
+    public int getYear() {
+        return year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
 
     @Override
     public String toString() {
