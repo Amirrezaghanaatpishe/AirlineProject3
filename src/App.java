@@ -8,10 +8,8 @@
 
 public class App {
     public static void main(String[] args) {
-
-        System.out.println(ColorMethods.RED_BOLD + "sssss" + ColorMethods.RESET);
-        Passenger passenger = new Passenger("aaa", "aaaa");
-
+        Account account = new Account();
+        account.firstMenu();
     }
 }
 

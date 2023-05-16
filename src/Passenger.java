@@ -93,7 +93,7 @@ public class Passenger extends User {
     }
 
     //----------Search
-    public void searchFlight() {
+    private void searchFlight() {
         Tools.cls();
         schedule();
         searchMenu();
@@ -126,7 +126,7 @@ public class Passenger extends User {
                     System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
                     num = Tools.input.nextInt();
             }
-        } while (num < 0 || num > 2);
+        } while (true);
     }
 
     private void searchFirst() {
@@ -159,15 +159,15 @@ public class Passenger extends User {
         String destination = Tools.input.next();
         if (Tools.stringCheck(destination))
             return;
-        System.out.println("\nYear :");
+        System.out.print("\nYear :");
         int year = Tools.input.nextInt();
         if (Tools.integerCheck(year))
             return;
-        System.out.println("\nMonth :");
+        System.out.print("\nMonth :");
         int month = Tools.input.nextInt();
         if (Tools.integerCheck(month))
             return;
-        System.out.println("\nDay :");
+        System.out.print("\nDay :");
         int day = Tools.input.nextInt();
         if (Tools.integerCheck(day))
             return;
@@ -184,7 +184,7 @@ public class Passenger extends User {
     //----------Booking
     private void booking() {
         schedule();
-        System.out.println("Enter num for booking or Enter 999 to search");
+        System.out.print("\nEnter num for booking or Enter 999 to search :");
         int num = Tools.input.nextInt();
         if (Tools.integerCheck(num))
             return;
@@ -204,6 +204,7 @@ public class Passenger extends User {
             return;
         }
         tickets.add(flights.get(num - 1));
+        this.charge -= tickets.get(num - 1).getPrice();
         Flight flight = flights.get(num - 1);
         flight.setSeat((flight.getSeat() - 1));
         flights.set(num - 1, flight);
@@ -223,7 +224,7 @@ public class Passenger extends User {
     //----------Cancel
     private void cancel() {
         bookedSchedule();
-        System.out.println("Enter num ticket");
+        System.out.print("\nEnter num ticket");
         int num = Tools.input.nextInt();
         if (Tools.integerCheck(num))
             return;
@@ -254,6 +255,7 @@ public class Passenger extends User {
     public void passengerTask() {
         int num;
         do {
+            Tools.cls();
             num = passengerMenu();
             switch (num) {
                 case 1:
