@@ -143,9 +143,10 @@ public class Passenger extends User {
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
         for (int i = 0; i < j; i++) {
-            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination))
+            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination)) {
                 System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
-            System.out.print("\n--------------------------------------------------------------------------------------");
+                System.out.print("\n--------------------------------------------------------------------------------------");
+            }
         }
     }
 
@@ -175,9 +176,10 @@ public class Passenger extends User {
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
         for (int i = 0; i < j; i++) {
-            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination) && flights.get(i).getYear() == year && flights.get(i).getMonth() == month && flights.get(i).getDay() == day)
+            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination) && flights.get(i).getYear() == year && flights.get(i).getMonth() == month && flights.get(i).getDay() == day) {
                 System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
-            System.out.print("\n--------------------------------------------------------------------------------------");
+                System.out.print("\n--------------------------------------------------------------------------------------");
+            }
         }
     }
 
