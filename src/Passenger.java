@@ -2,11 +2,15 @@ import java.util.ArrayList;
 
 public class Passenger extends User {
     private double charge;
-    private static ArrayList<Flight> tickets = new ArrayList<Flight>();
+    private ArrayList<Flight> tickets = new ArrayList<Flight>();
 
     public Passenger(String id, String password) {
         super(id, password);
         this.charge = 0;
+    }
+
+    public ArrayList<Flight> getTickets() {
+        return tickets;
     }
 
     //----------Method

@@ -277,6 +277,10 @@ public class Admin extends User {
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
             Tools.cls();
+            if (Account.checker(flights.get(N).getFlightId(), flights.get(N).getDay(), flights.get(N).getTime())) {
+                System.out.println("You can't remove this flight");
+                return;
+            }
             System.out.println("Are you sure???\n\t(1) Yes \n\t(2) No");
             int num;
             do {
@@ -310,6 +314,11 @@ public class Admin extends User {
                     break;
                 case 3:
                     remove();
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 4:
                     schedule();

@@ -1,16 +1,57 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 public class Account {
-    private ArrayList<Admin> admins = new ArrayList<>();
-    private ArrayList<Passenger> passengers = new ArrayList<>();
+    private static ArrayList<Admin> admins = new ArrayList<>();
+    private static ArrayList<Passenger> passengers = new ArrayList<>();
+    private static RandomAccessFile passengerFile;
+    final int FIX_SIZE = 10;
 
     public Account() {
-        Admin admin = new Admin("admin", "admin");
-        admins.add(admin);
-        Passenger passenger = new Passenger("passenger", "passenger");
-        passengers.add(passenger);
+        try {
+            passengerFile = new RandomAccessFile("DataBase\\Passengers.dat", "rw");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
     //----------Methods
+
+    //----------File
+    //----------Close
+    private void closeFile() {
+        try {
+            passengerFile.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //----------Fix String
+    private String fixStringToWrite(String str) {
+        while (str.length() < FIX_SIZE)
+            str += " "; //read StringBuilder class for better performance
+        return str.substring(0, FIX_SIZE);
+    }
+
+    //----------Read String
+    private String readString(int bt) {
+        String tmp = "";
+        try {
+            passengerFile.seek(bt);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < FIX_SIZE; i++) {
+            try {
+                tmp += passengerFile.readChar();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return tmp.trim();
+    }
 
     //----------Menu
     private void menu() {
@@ -118,5 +159,17 @@ public class Account {
                     break;
             }
         } while (true);
+    }
+
+    //----------Check
+    public static boolean checker(String flightId, int day, String time) {
+        for (int i = 0; i < passengers.size(); i++) {
+            for (int j = 0; j < passengers.get(i).getTickets().size(); j++) {
+
+                return passengers.get(i).getTickets().get(i).getFlightId().equals(flightId) && passengers.get(i).getTickets().get(i).getDay() == day && passengers.get(i).getTickets().get(i).getTime().equals(time);
+
+            }
+        }
+        return 0 == 1;
     }
 }
