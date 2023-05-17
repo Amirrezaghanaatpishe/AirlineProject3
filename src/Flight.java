@@ -1,4 +1,6 @@
 public class Flight {
+
+    private int num ;
     private String flightId;
     private String origin;
     private String destination;
@@ -13,7 +15,7 @@ public class Flight {
         return destination;
     }
 
-    public Flight(String flightId, String origin, String destination, int year, int month, int day, String time, double price, int seat) {
+    public Flight(String flightId, String origin, String destination, int year, int month, int day, String time, double price, int seat , String path , int num) {
         this.flightId = flightId;
         this.origin = origin;
         this.destination = destination;
@@ -23,6 +25,17 @@ public class Flight {
         this.time = time;
         this.price = price;
         this.seat = seat;
+        this.num = num ;
+        Tools.writeInteger(path, Tools.getLength(path), this.num);
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(this.flightId));
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(this.origin));
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(this.destination));
+        Tools.writeInteger(path, Tools.getLength(path), this.year);
+        Tools.writeInteger(path, Tools.getLength(path), this.month);
+        Tools.writeInteger(path, Tools.getLength(path), this.day);
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(this.time));
+        Tools.writeDouble(path, Tools.getLength(path), this.price);
+        Tools.writeInteger(path, Tools.getLength(path), this.seat);
     }
 
     public void setOrigin(String origin) {

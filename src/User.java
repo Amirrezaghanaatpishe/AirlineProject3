@@ -3,6 +3,8 @@ import java.util.ArrayList;
 public class User {
     protected String id;
     protected String password;
+
+    protected final String flightPath = "DataBase\\Flights.dat";
     protected static ArrayList<Flight> flights = new ArrayList<Flight>();
 
     public User(String id, String password) {

@@ -8,6 +8,7 @@ public class Admin extends User {
     //----------Methods
 
     //----------Menu
+
     //----------Admin Menu
     private void menu() {
         System.out.println("*************************\n\tADMIN MENU OPTION\n*************************\n\t(1) Add \n\t(2) Update\n\t(3) Remove\n\t(4) Flight Schedule\n\t(0) Sign out");
@@ -96,8 +97,9 @@ public class Admin extends User {
         int A9 = Tools.input.nextInt();
         if (Tools.integerCheck(A9))
             return;
+        int num = Tools.readInteger(flightPath, (Tools.getLength(flightPath) - 108)) + 1;
         String A8 = String.valueOf(A1.charAt(0)).toUpperCase() + String.valueOf(A2.charAt(0)).toUpperCase() + String.valueOf(A3).substring(2, 4) + String.valueOf(A4);
-        Flight flight = new Flight(A8, A1, A2, A3, A4, A5, A6, A7, A9);
+        Flight flight = new Flight(A8, A1, A2, A3, A4, A5, A6, A7, A9, flightPath, num);
         flights.add(flight);
         Tools.cls();
         System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
@@ -105,11 +107,13 @@ public class Admin extends User {
 
     //----------Schedule
     private void schedule() {
-        int j = flights.size();
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
-        for (int i = 0; i < j; i++) {
-            System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
+        for (int i = 0; i < (Tools.getLength(flightPath) / 108); i++) {
+            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                    + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                    + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
+                    "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
             System.out.print("\n--------------------------------------------------------------------------------------");
         }
     }
@@ -125,7 +129,7 @@ public class Admin extends User {
                 N = Tools.input.nextInt();
                 if (Tools.integerCheck(N))
                     return;
-                if (N <= flights.size() && N > 0)
+                if (N <= Tools.getLength(flightPath) / 108 && N > 0)
                     break;
                 Tools.cls();
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
@@ -177,10 +181,8 @@ public class Admin extends User {
         String origin = Tools.input.next();
         if (Tools.stringCheck(origin))
             return;
-        Flight flight = flights.get(num - 1);
-        flight.setOrigin(origin);
-        flight.setFlightId(String.valueOf(origin.charAt(0)).toUpperCase() + flight.getFlightId().substring(1, flight.getFlightId().length()));
-        flights.set(num - 1, flight);
+        Tools.writeString(flightPath, (24 + (108 * (num - 1))), Tools.fixStringToWrite(origin));
+        Tools.writeString(flightPath, (4 + (108 * (num - 1))), Tools.fixStringToWrite(String.valueOf(origin.charAt(0)).toUpperCase() + Tools.readString(flightPath, 4 + (108 * (num - 1))).substring(1, Tools.readString(flightPath, 4 + (108 * (num - 1))).length())));
     }
 
     private void updateDestination(int num) {
@@ -189,16 +191,12 @@ public class Admin extends User {
         String destination = Tools.input.next();
         if (Tools.stringCheck(destination))
             return;
-        Flight flight = flights.get(num - 1);
-        flight.setDestination(destination);
-        flight.setFlightId(String.valueOf(String.valueOf(flight.getFlightId().charAt(0)) + destination.charAt(0)).toUpperCase() + flight.getFlightId().substring(2, flight.getFlightId().length()));
-        flights.set(num - 1, flight);
+        Tools.writeString(flightPath, (44 + (108 * (num - 1))), Tools.fixStringToWrite(destination));
+        Tools.writeString(flightPath, (4 + (108 * (num - 1))), Tools.fixStringToWrite(String.valueOf(Tools.readString(flightPath, 4 + (108 * (num - 1))).charAt(0)) + String.valueOf(destination.charAt(0)).toUpperCase() + Tools.readString(flightPath, 4 + (108 * (num - 1))).substring(2, Tools.readString(flightPath, 4 + (108 * (num - 1))).length())));
     }
 
     private void updateDate(int num) {
         Tools.cls();
-        Flight flight = flights.get(num - 1);
-
         int year;
         do {
             System.out.print("Enter new year :");
@@ -218,14 +216,14 @@ public class Admin extends User {
         int day = Tools.input.nextInt();
         if (Tools.integerCheck(day))
             return;
-        flight.setDate(year, month, day);
-        flight.setFlightId(flight.getFlightId().substring(0, 2) + String.valueOf(year).substring(2, 4) + String.valueOf(month));
-        flights.set(num - 1, flight);
+        Tools.writeInteger(flightPath, (64 + ((num - 1) * 108)), year);
+        Tools.writeInteger(flightPath, (68 + ((num - 1) * 108)), month);
+        Tools.writeInteger(flightPath, (72 + ((num - 1) * 108)), day);
+        Tools.writeString(flightPath, (4 + ((num - 1) * 108)), Tools.fixStringToWrite(Tools.readString(flightPath, (4 + ((num - 1) * 108))).substring(0, 2) + String.valueOf(year).substring(2, 4) + String.valueOf(month)));
     }
 
     private void updateTime(int num) {
         Tools.cls();
-        Flight flight = flights.get(num - 1);
         System.out.print("Enter new hour :");
         int hour = Tools.input.nextInt();
         if (Tools.integerCheck(hour))
@@ -235,30 +233,25 @@ public class Admin extends User {
         if (Tools.integerCheck(minute))
             return;
         String time = String.valueOf(hour) + ":" + String.valueOf(minute);
-        flight.setTime(time);
-        flights.set(num - 1, flight);
+        Tools.writeString(flightPath, (76 + ((num - 1) * 108)), Tools.fixStringToWrite(time));
     }
 
     private void updatePrice(int num) {
         Tools.cls();
-        Flight flight = flights.get(num - 1);
         System.out.print("Enter new price :");
         int price = Tools.input.nextInt();
         if (Tools.integerCheck(price))
             return;
-        flight.setPrice(price);
-        flights.set(num - 1, flight);
+        Tools.writeDouble(flightPath, (96 + (108 * (num - 1))), price);
     }
 
     private void updateSeat(int num) {
         Tools.cls();
-        Flight flight = flights.get(num - 1);
         System.out.print("Enter new seats :");
         int seat = Tools.input.nextInt();
         if (Tools.integerCheck(seat))
             return;
-        flight.setSeat(seat);
-        flights.set(num - 1, flight);
+        Tools.writeInteger(flightPath, (104 + ((num - 1) * 108)), seat);
     }
 
     //----------REMOVE
@@ -271,16 +264,16 @@ public class Admin extends User {
                 N = Tools.input.nextInt();
                 if (Tools.integerCheck(N))
                     return;
-                if (N <= flights.size() && N > 0)
+                if (N <= Tools.getLength(flightPath) && N > 0)
                     break;
                 Tools.cls();
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
-            Tools.cls();
-            if (Account.checker(flights.get(N).getFlightId(), flights.get(N).getDay(), flights.get(N).getTime())) {
-                System.out.println("You can't remove this flight");
-                return;
-            }
+//            Tools.cls();
+//            if (Account.checker(flights.get(N).getFlightId(), flights.get(N).getDay(), flights.get(N).getTime())) {
+//                System.out.println("You can't remove this flight");
+//                return;
+//            }
             System.out.println("Are you sure???\n\t(1) Yes \n\t(2) No");
             int num;
             do {
@@ -289,8 +282,21 @@ public class Admin extends User {
                     break;
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
-            if (num == 1)
-                flights.remove(N - 1);
+            if (num == 1) {
+                Tools.writeInteger(flightPath, 108 * (N - 1), 0);
+                for (int i = N; i < Tools.getLength(flightPath) / 108; i++) {
+                    Tools.writeInteger(flightPath, (i - 1) * 108, Tools.readInteger(flightPath, i * 108));
+                    Tools.writeString(flightPath, 4 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 4 + i * 108)));
+                    Tools.writeString(flightPath, 24 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 24 + i * 108)));
+                    Tools.writeString(flightPath, 44 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 44 + i * 108)));
+                    Tools.writeInteger(flightPath, 64 + (i - 1) * 108, Tools.readInteger(flightPath, 64 + i * 108));
+                    Tools.writeInteger(flightPath, 68 + (i - 1) * 108, Tools.readInteger(flightPath, 68 + i * 108));
+                    Tools.writeInteger(flightPath, 72 + (i - 1) * 108, Tools.readInteger(flightPath, 72 + i * 108));
+                    Tools.writeString(flightPath, 76 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 76 + i * 108)));
+                    Tools.writeDouble(flightPath, 96 + (i - 1) * 108, Tools.readDouble(flightPath, 96 + i * 108));
+                    Tools.writeInteger(flightPath, 104 + (i - 1) * 108, Tools.readInteger(flightPath, 104 + i * 108));
+                }
+            }
         } while (true);
 
     }

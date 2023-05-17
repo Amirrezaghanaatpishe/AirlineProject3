@@ -90,11 +90,13 @@ public class Passenger extends User {
 
     //----------Schedule
     private void schedule() {
-        int j = flights.size();
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
-        for (int i = 0; i < j; i++) {
-            System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
+        for (int i = 0; i < (Tools.getLength(flightPath) / 108); i++) {
+            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                    + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                    + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
+                    "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
             System.out.print("\n--------------------------------------------------------------------------------------");
         }
     }
