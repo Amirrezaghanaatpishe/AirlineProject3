@@ -140,7 +140,8 @@ public class Tools {
         return tmp;
     }
 
-    //----------Get Length
+    //----------Length
+
     public static long getLength(String path) {
         long length = 0;
         try {
@@ -153,5 +154,16 @@ public class Tools {
         return length;
     }
 
+    public static void setLength(String path , long length) {
+
+        try {
+            RandomAccessFile file = new RandomAccessFile(path, "rw");
+            file.setLength(length);
+            file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 }

@@ -297,6 +297,7 @@ public class Admin extends User {
                     Tools.writeInteger(flightPath, 104 + (i - 1) * 108, Tools.readInteger(flightPath, 104 + i * 108));
                 }
             }
+            Tools.setLength(flightPath , Tools.getLength(flightPath) - 108);
         } while (true);
 
     }
