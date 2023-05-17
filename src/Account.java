@@ -1,57 +1,14 @@
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 
 
 public class Account {
     private final Admin ADMIN = new Admin("admin", "admin");
-    private Passenger passenger ;
-    private static RandomAccessFile passengerFile;
-    final int FIX_SIZE = 10;
+    private Passenger passenger;
+    final String path = "DataBase\\Passengers.dat";
 
-    public Account() {
-        try {
-            passengerFile = new RandomAccessFile("DataBase\\Passengers.dat", "rw");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     //----------Methods
-
-    //----------File
-    //----------Close
-    private void closeFile() {
-        try {
-            passengerFile.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //----------Fix String
-    private String fixStringToWrite(String str) {
-        while (str.length() < FIX_SIZE)
-            str += " "; //read StringBuilder class for better performance
-        return str.substring(0, FIX_SIZE);
-    }
-
-    //----------Read String
-    private String readString(int bt) {
-        String tmp = "";
-        try {
-            passengerFile.seek(bt);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for (int i = 0; i < FIX_SIZE; i++) {
-            try {
-                tmp += passengerFile.readChar();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return tmp.trim();
-    }
 
     //----------Menu
     private void menu() {
@@ -81,7 +38,7 @@ public class Account {
     }
 
     //----------Sign In
-    private void signIn() throws IOException {
+    private void signIn() {
         Tools.cls();
         do {
             System.out.print("\nEnter username :");
@@ -96,9 +53,9 @@ public class Account {
                 ADMIN.adminTask();
                 return;
             }
-            for (int i = 0; i < (passengerFile.length() / 52); i++) {
-                if (readString(4 + (i * 52)).equals(username) && (readString(24 + (i * 52)).equals(password))) {
-                    passenger = new Passenger(username , password);
+            for (int i = 0; i < (Tools.getLength(path) / 52); i++) {
+                if (Tools.readString(path, 4 + (i * 52)).equals(username) && (Tools.readString(path, 24 + (i * 52)).equals(password))) {
+                    passenger = new Passenger(username, password, Tools.readDouble(path, 44 + (i * 52)), Tools.readInteger(path, 52 * i));
                     passenger.passengerTask();
                     passenger = null;
                     return;
@@ -111,7 +68,7 @@ public class Account {
     }
 
     //----------Sign Up
-    private void signUp() throws IOException {
+    private void signUp() {
         Tools.cls();
         System.out.print("Enter username (your username must be less than ten char) :");
         int flag;
@@ -126,9 +83,9 @@ public class Account {
             }
             if (Tools.stringCheck(userName))
                 return;
-            for (int i = 0; i < (passengerFile.length() / 52); i++) {
+            for (int i = 0; i < (Tools.getLength(path) / 52); i++) {
 
-                if (readString(4 + (52 * i)).equals(userName)) {
+                if (Tools.readString(path, 4 + (52 * i)).equals(userName)) {
                     Tools.cls();
                     System.out.print(ColorMethods.RED_BOLD + "Use another name :" + ColorMethods.RESET);
                     flag = 0;
@@ -140,15 +97,17 @@ public class Account {
         String password = Tools.input.next();
         if (Tools.stringCheck(password))
             return;
-        passengerFile.seek(passengerFile.length() - 52);
-        int number = passengerFile.readInt();
-        passengerFile.seek(passengerFile.length());
-        passengerFile.writeInt(number + 1);
-        passengerFile.writeChars(fixStringToWrite(userName));
-        passengerFile.writeChars(fixStringToWrite(password));
-        passengerFile.writeDouble(0);
+        int number = Tools.readInteger(path, (int) (Tools.getLength(path) - 52));
+        Tools.writeInteger(path, Tools.getLength(path), number + 1);
+        Tools.writeString(path, (Tools.getLength(path)), Tools.fixStringToWrite(userName));
+        Tools.writeString(path, (Tools.getLength(path)), Tools.fixStringToWrite(password));
+        Tools.writeDouble(path, (Tools.getLength(path)), 0);
         String fileName = "DataBase\\PassengersTickets\\passenger" + String.valueOf(number + 1) + ".dat";
-        RandomAccessFile ticket = new RandomAccessFile(fileName, "rw");
+        try {
+            new RandomAccessFile(fileName, "rw");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //----------Sign
@@ -161,18 +120,10 @@ public class Account {
                 case 0:
                     return;
                 case 1:
-                    try {
-                        signIn();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    signIn();
                     break;
                 case 2:
-                    try {
-                        signUp();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    signUp();
                     break;
                 default:
                     break;

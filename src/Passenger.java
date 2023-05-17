@@ -3,10 +3,12 @@ import java.util.ArrayList;
 public class Passenger extends User {
     private double charge;
     private ArrayList<Flight> tickets = new ArrayList<Flight>();
+    private String path;
 
-    public Passenger(String id, String password) {
+    public Passenger(String id, String password, double charge, int number) {
         super(id, password);
-        this.charge = 0;
+        this.charge = charge;
+        this.path = "DataBase\\PassengersTickets\\passenger" + String.valueOf(number) + ".dat";
     }
 
     public ArrayList<Flight> getTickets() {
@@ -14,6 +16,7 @@ public class Passenger extends User {
     }
 
     //----------Method
+
     //----------Passenger Menu
     private void menu() {
         System.out.println("*****************************\n\tPassenger MENU OPTION\n*****************************\n\t(1) Change password \n\t(2) Search flight ticket\n\t(3) Booking ticket\n\t(4) Ticket cancellation\n\t(5) Booked tickets\n\t(6) Add charge\n\t(0) Sign out");
