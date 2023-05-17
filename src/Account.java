@@ -1,11 +1,11 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
+
 
 public class Account {
-    private static ArrayList<Admin> admins = new ArrayList<>();
-    private static ArrayList<Passenger> passengers = new ArrayList<>();
+    private final Admin ADMIN = new Admin("admin", "admin");
+    private Passenger passenger ;
     private static RandomAccessFile passengerFile;
     final int FIX_SIZE = 10;
 
@@ -81,7 +81,7 @@ public class Account {
     }
 
     //----------Sign In
-    private void signIn() {
+    private void signIn() throws IOException {
         Tools.cls();
         do {
             System.out.print("\nEnter username :");
@@ -92,17 +92,15 @@ public class Account {
             String password = Tools.input.next();
             if (Tools.stringCheck(password))
                 return;
-            if (admins.get(0).getId().equals(username) && admins.get(0).getPassword().equals(password)) {
-                Admin admin = admins.get(0);
-                admin.adminTask();
-                admins.set(0, admin);
+            if (ADMIN.getId().equals(username) && ADMIN.getPassword().equals(password)) {
+                ADMIN.adminTask();
                 return;
             }
-            for (int i = 0; i < passengers.size(); i++) {
-                if (passengers.get(i).getId().equals(username) && (passengers.get(i).getPassword().equals(password))) {
-                    Passenger passenger = passengers.get(i);
+            for (int i = 0; i < (passengerFile.length() / 52); i++) {
+                if (readString(4 + (i * 52)).equals(username) && (readString(24 + (i * 52)).equals(password))) {
+                    passenger = new Passenger(username , password);
                     passenger.passengerTask();
-                    passengers.set(i, passenger);
+                    passenger = null;
                     return;
                 }
             }
@@ -163,7 +161,11 @@ public class Account {
                 case 0:
                     return;
                 case 1:
-                    signIn();
+                    try {
+                        signIn();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 2:
                     try {
@@ -180,13 +182,13 @@ public class Account {
 
     //----------Check
     public static boolean checker(String flightId, int day, String time) {
-        for (int i = 0; i < passengers.size(); i++) {
-            for (int j = 0; j < passengers.get(i).getTickets().size(); j++) {
-
-                return passengers.get(i).getTickets().get(i).getFlightId().equals(flightId) && passengers.get(i).getTickets().get(i).getDay() == day && passengers.get(i).getTickets().get(i).getTime().equals(time);
-
-            }
-        }
+//        for (int i = 0; i < passengers.size(); i++) {
+//            for (int j = 0; j < passengers.get(i).getTickets().size(); j++) {
+//
+//                return passengers.get(i).getTickets().get(i).getFlightId().equals(flightId) && passengers.get(i).getTickets().get(i).getDay() == day && passengers.get(i).getTickets().get(i).getTime().equals(time);
+//
+//            }
+//        }
         return 0 == 1;
     }
 }
