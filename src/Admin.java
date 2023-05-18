@@ -274,11 +274,11 @@ public class Admin extends User {
                 Tools.cls();
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
-//            Tools.cls();
-//            if (Account.checker(flights.get(N).getFlightId(), flights.get(N).getDay(), flights.get(N).getTime())) {
-//                System.out.println("You can't remove this flight");
-//                return;
-//            }
+            Tools.cls();
+            if (Account.checker(Tools.readString(flightPath , 4 + ((N - 1) * 108)), Tools.readInteger(flightPath, 72 + ((N-1) * 108)), Tools.readString(flightPath, 76 + 108 * (N - 1)))) {
+                System.out.println("You can't remove this flight");
+                return;
+            }
             System.out.println("Are you sure???\n\t(1) Yes \n\t(2) No");
             int num;
             do {

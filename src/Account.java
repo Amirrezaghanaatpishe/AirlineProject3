@@ -133,13 +133,12 @@ public class Account {
 
     //----------Check
     public static boolean checker(String flightId, int day, String time) {
-//        for (int i = 0; i < passengers.size(); i++) {
-//            for (int j = 0; j < passengers.get(i).getTickets().size(); j++) {
-//
-//                return passengers.get(i).getTickets().get(i).getFlightId().equals(flightId) && passengers.get(i).getTickets().get(i).getDay() == day && passengers.get(i).getTickets().get(i).getTime().equals(time);
-//
-//            }
-//        }
+        for (int i = 0; i < Tools.getLength("DataBase\\Passengers.dat") / 52; i++) {
+            String path = "DataBase\\PassengersTickets\\passenger" + String.valueOf(i) + ".dat";
+            for (int j = 0; j < Tools.getLength(path) / 108; j++) {
+                return Tools.readString(path, 4 + ((i) * 108)).equals(flightId) && Tools.readInteger(path, 72 + ((i) * 108)) == day && Tools.readString(path, 76 + 108 * (i)).equals(time);
+            }
+        }
         return 0 == 1;
     }
 }
