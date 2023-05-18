@@ -1,19 +1,22 @@
-import java.util.ArrayList;
-
 public class Passenger extends User {
     private double charge;
-    private ArrayList<Flight> tickets = new ArrayList<Flight>();
     private String path;
+
+    private int number;
+
+    private int tik;
 
     public Passenger(String id, String password, double charge, int number) {
         super(id, password);
         this.charge = charge;
+        this.number = number;
         this.path = "DataBase\\PassengersTickets\\passenger" + String.valueOf(number) + ".dat";
+        this.tik = 0;
+        if (Tools.getLength(path) >= 108) {
+            this.tik = Tools.readInteger(path, Tools.getLength(path) - 108);
+        }
     }
 
-    public ArrayList<Flight> getTickets() {
-        return tickets;
-    }
 
     //----------Method
 
@@ -148,12 +151,14 @@ public class Passenger extends User {
         String destination = Tools.input.next();
         if (Tools.stringCheck(destination))
             return;
-        int j = flights.size();
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
-        for (int i = 0; i < j; i++) {
-            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination)) {
-                System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
+        for (int i = 0; i < Tools.getLength(flightPath) / 108; i++) {
+            if (Tools.readString(flightPath, 24 + (108 * i)).equals(origin) && Tools.readString(flightPath, 44 + (108 * i)).equals(destination)) {
+                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                        + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
+                        "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
                 System.out.print("\n--------------------------------------------------------------------------------------");
             }
         }
@@ -181,12 +186,14 @@ public class Passenger extends User {
         int day = Tools.input.nextInt();
         if (Tools.integerCheck(day))
             return;
-        int j = flights.size();
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
-        for (int i = 0; i < j; i++) {
-            if (flights.get(i).getOrigin().equals(origin) && flights.get(i).getDestination().equals(destination) && flights.get(i).getYear() == year && flights.get(i).getMonth() == month && flights.get(i).getDay() == day) {
-                System.out.print("\n" + (i + 1) + "\t" + flights.get(i).toString());
+        for (int i = 0; i < Tools.getLength(flightPath) / 108; i++) {
+            if (Tools.readString(flightPath, 24 + (108 * i)).equals(origin) && Tools.readString(flightPath, 44 + (108 * i)).equals(destination) && Tools.readInteger(flightPath, (64 + (108 * i))) == year && Tools.readInteger(flightPath, 68 + (108 * i)) == month && Tools.readInteger(flightPath, (72 + (108 * i))) == day) {
+                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                        + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
+                        "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
                 System.out.print("\n--------------------------------------------------------------------------------------");
             }
         }
@@ -196,38 +203,61 @@ public class Passenger extends User {
     private void booking() {
         schedule();
         System.out.print("\nEnter num for booking or Enter 999 to search :");
-        int num = Tools.input.nextInt();
+        int num = 0;
+        while (true) {
+            num = Tools.input.nextInt();
+            if (num >= 0 && num <= Tools.getLength(flightPath) / 108)
+                break;
+            System.out.println(ColorMethods.RED_BOLD + "use correct number :" + ColorMethods.RESET);
+        }
         if (Tools.integerCheck(num))
             return;
         if (num == 999) {
             searchSecond();
-            System.out.println("Enter num for booking");
-            num = Tools.input.nextInt();
+            System.out.println("Enter num for booking :");
+            while (true) {
+                num = Tools.input.nextInt();
+                if (num >= 0 && num <= Tools.getLength(flightPath) / 108)
+                    break;
+                System.out.println(ColorMethods.RED_BOLD + "use correct number :" + ColorMethods.RESET);
+            }
             if (Tools.integerCheck(num))
                 return;
         }
-        if (Tools.integerCheck(flights.get(num - 1).getSeat())) {
+        if (Tools.integerCheck(Tools.readInteger(flightPath, 104 + (108 * (num - 1))))) {
             System.out.println("Booking failed");
             return;
         }
-        if (this.charge < flights.get(num - 1).getPrice()) {
+        if (this.charge < Tools.readDouble(flightPath, 96 + (108 * (num - 1)))) {
             System.out.println("Booking failed");
             return;
         }
-        tickets.add(flights.get(num - 1));
-        this.charge -= tickets.get(num - 1).getPrice();
-        Flight flight = flights.get(num - 1);
-        flight.setSeat((flight.getSeat() - 1));
-        flights.set(num - 1, flight);
+        Tools.writeInteger(path, Tools.getLength(path), tik + 1);
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(Tools.readString(flightPath, 4 + 108 * (num - 1))));
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(Tools.readString(flightPath, 24 + 108 * (num - 1))));
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(Tools.readString(flightPath, 44 + 108 * (num - 1))));
+        Tools.writeInteger(path, Tools.getLength(path), Tools.readInteger(flightPath, 64 + 108 * (num - 1)));
+        Tools.writeInteger(path, Tools.getLength(path), Tools.readInteger(flightPath, 68 + 108 * (num - 1)));
+        Tools.writeInteger(path, Tools.getLength(path), Tools.readInteger(flightPath, 72 + 108 * (num - 1)));
+        Tools.writeString(path, Tools.getLength(path), Tools.fixStringToWrite(Tools.readString(flightPath, 76 + 108 * (num - 1))));
+        Tools.writeDouble(path, Tools.getLength(path), Tools.readDouble(flightPath, 96 + 108 * (num - 1)));
+        Tools.writeInteger(flightPath, 104 + (108 * (num - 1)), Tools.readInteger(flightPath, 104 + 108 * (num - 1)) - 1);
+        Tools.writeInteger(path, Tools.getLength(path), Tools.readInteger(flightPath, 104 + 108 * (num - 1)));
+        this.charge = this.charge - Tools.readDouble(flightPath, 96 + 108 * (num - 1));
+        Tools.writeDouble(passengerPath, 44 + (this.number * 52), (this.charge));
+        System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
+        tik++;
     }
 
     //----------Booked
     private void bookedSchedule() {
-        int j = tickets.size();
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
         System.out.print("\n--------------------------------------------------------------------------------------");
-        for (int i = 0; i < j; i++) {
-            System.out.print("\n" + (i + 1) + "\t" + tickets.get(i).toString());
+        for (int i = 0; i < (Tools.getLength(path) / 108); i++) {
+            System.out.print("\n" + Tools.readInteger(path, (108 * i)) + "\t" + Tools.readString(path, (4 + (108 * i))) + "\t" + Tools.readString(path, (24 + (108 * i)))
+                    + "\t\t" + Tools.readString(path, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(path, (64 + (108 * i))))
+                    + "\\" + String.valueOf(Tools.readInteger(path, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(path, (72 + (108 * i))) +
+                    "\t\t" + Tools.readString(path, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(path, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(path, (104 + (108 * i))))));
             System.out.print("\n--------------------------------------------------------------------------------------");
         }
     }
@@ -235,32 +265,57 @@ public class Passenger extends User {
     //----------Cancel
     private void cancel() {
         bookedSchedule();
-        System.out.print("\nEnter num ticket");
-        int num = Tools.input.nextInt();
+        System.out.print("\nEnter num ticket :");
+        int num;
+        while (true) {
+            num = Tools.input.nextInt();
+            if (num >= 0 && num <= Tools.getLength(path) / 108)
+                break;
+            System.out.println(ColorMethods.RED_BOLD + "use correct number :" + ColorMethods.RESET);
+        }
         if (Tools.integerCheck(num))
             return;
-        this.charge += tickets.get(num - 1).getPrice();
-        for (int i = 0; i < flights.size(); i++) {
-            Flight flight = tickets.get(num - 1);
-            if (flights.get(i).getFlightId().equals(flight.getFlightId()) && flights.get(i).getDay() == flight.getDay() && flights.get(i).getTime().equals(flight.getTime())) {
-                flight = flights.get(i);
-                flight.setSeat(flight.getSeat() + 1);
-                flights.set(i, flight);
+
+        for (int i = 0; i < Tools.getLength(flightPath) / 108; i++) {
+            if (Tools.readString(path, 4 + ((num - 1) * 108)).equals(Tools.readString(flightPath, 4 + i * 108)) && Tools.readInteger(path, 72 + ((num - 1) * 108)) == Tools.readInteger(flightPath, 72 + i * 108) && Tools.readString(path, 76 + 108 * (num  - 1)).equals(Tools.readString(flightPath, 76 + 108 * i))) {
+                Tools.writeInteger(flightPath, 104 + 108 * i, Tools.readInteger(flightPath, 104 + 108 * i) + 1);
                 break;
             }
         }
-        tickets.remove(num - 1);
+        this.charge += Tools.readDouble(path , 96 + (num-1) * 108);
+        Tools.writeDouble(passengerPath, 44 + this.number * 52, this.charge);
+
+        if ((Tools.getLength(path) / 108 )== num){
+            Tools.setLength(path , Tools.getLength(path) - 108);
+            tik--;
+            return;
+        }
+        for (int i = num; i < Tools.getLength(path) / 108; i++) {
+            Tools.writeString(path, 4 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(path, 4 + i * 108)));
+            Tools.writeString(path, 24 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(path, 24 + i * 108)));
+            Tools.writeString(path, 44 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(path, 44 + i * 108)));
+            Tools.writeInteger(path, 64 + (i - 1) * 108, Tools.readInteger(path, 64 + i * 108));
+            Tools.writeInteger(path, 68 + (i - 1) * 108, Tools.readInteger(path, 68 + i * 108));
+            Tools.writeInteger(path, 72 + (i - 1) * 108, Tools.readInteger(path, 72 + i * 108));
+            Tools.writeString(path, 76 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(path, 76 + i * 108)));
+            Tools.writeDouble(path, 96 + (i - 1) * 108, Tools.readDouble(path, 96 + i * 108));
+            Tools.writeInteger(path, 104 + (i - 1) * 108, Tools.readInteger(path, 104 + i * 108));
+            Tools.writeDouble(passengerPath, 44 + this.number * 52, this.charge);
+        }
+        Tools.setLength(path , Tools.getLength(path) - 108);
+        tik--;
     }
 
     //----------charge
     private void chargeUser() {
         Tools.cls();
-        System.out.print("your charge is :" + this.charge + "\nEnter charge dp you want : ");
+        System.out.print("your charge is :" + this.charge + "\nEnter charge do you want : ");
         double charge = Tools.input.nextDouble();
         if (Tools.doubleCheck(charge))
             return;
         this.charge += charge;
-
+        Tools.writeDouble(passengerPath, 44 + this.number * 52, this.charge);
+        System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
     }
 
     public void passengerTask() {
@@ -283,7 +338,6 @@ public class Passenger extends User {
                     break;
                 case 3:
                     booking();
-                    System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
                     try {
                         Thread.sleep(1500);
                     } catch (InterruptedException e) {
@@ -306,7 +360,6 @@ public class Passenger extends User {
                     break;
                 case 6:
                     chargeUser();
-                    System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
                     try {
                         Thread.sleep(1500);
                     } catch (InterruptedException e) {

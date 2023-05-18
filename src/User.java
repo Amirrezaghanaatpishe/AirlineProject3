@@ -5,6 +5,7 @@ public class User {
     protected String password;
 
     protected final String flightPath = "DataBase\\Flights.dat";
+    protected final String passengerPath = "DataBase\\Passengers.dat";
     protected static ArrayList<Flight> flights = new ArrayList<Flight>();
 
     public User(String id, String password) {

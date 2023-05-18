@@ -1,8 +1,12 @@
 
 public class Admin extends User {
-
+    private int tik ;
     public Admin(String id, String password) {
         super(id, password);
+        this.tik = 0;
+        if (Tools.getLength(flightPath) >= 108) {
+            this.tik = Tools.readInteger(flightPath, Tools.getLength(flightPath) - 108);
+        }
     }
 
     //----------Methods
@@ -97,12 +101,13 @@ public class Admin extends User {
         int A9 = Tools.input.nextInt();
         if (Tools.integerCheck(A9))
             return;
-        int num = Tools.readInteger(flightPath, (Tools.getLength(flightPath) - 108)) + 1;
+        int num = tik + 1;
         String A8 = String.valueOf(A1.charAt(0)).toUpperCase() + String.valueOf(A2.charAt(0)).toUpperCase() + String.valueOf(A3).substring(2, 4) + String.valueOf(A4);
         Flight flight = new Flight(A8, A1, A2, A3, A4, A5, A6, A7, A9, flightPath, num);
         flights.add(flight);
         Tools.cls();
         System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
+        tik++;
     }
 
     //----------Schedule
@@ -283,9 +288,12 @@ public class Admin extends User {
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
             if (num == 1) {
-                Tools.writeInteger(flightPath, 108 * (N - 1), 0);
+                if ((Tools.getLength(flightPath) / 108 )== num) {
+                    Tools.setLength(flightPath, Tools.getLength(flightPath) - 108);
+                    tik--;
+                    return;
+                }
                 for (int i = N; i < Tools.getLength(flightPath) / 108; i++) {
-                    Tools.writeInteger(flightPath, (i - 1) * 108, Tools.readInteger(flightPath, i * 108));
                     Tools.writeString(flightPath, 4 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 4 + i * 108)));
                     Tools.writeString(flightPath, 24 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 24 + i * 108)));
                     Tools.writeString(flightPath, 44 + (i - 1) * 108, Tools.fixStringToWrite(Tools.readString(flightPath, 44 + i * 108)));
@@ -298,6 +306,7 @@ public class Admin extends User {
                 }
             }
             Tools.setLength(flightPath , Tools.getLength(flightPath) - 108);
+            tik--;
         } while (true);
 
     }
