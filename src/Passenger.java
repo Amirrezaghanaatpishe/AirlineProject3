@@ -22,7 +22,7 @@ public class Passenger extends User {
 
     //----------Passenger Menu
     private void menu() {
-        System.out.println("*****************************\n\tPassenger MENU OPTION\n*****************************\n\t(1) Change password \n\t(2) Search flight ticket\n\t(3) Booking ticket\n\t(4) Ticket cancellation\n\t(5) Booked tickets\n\t(6) Add charge\n\t(0) Sign out");
+        System.out.println("*************************************\n\tPassenger MENU OPTION\n*************************************\n\t(1) Change password \n\t(2) Search flight ticket\n\t(3) Booking ticket\n\t(4) Ticket cancellation\n\t(5) Booked tickets\n\t(6) Add charge\n\t(0) Sign out");
     }
 
     private int passengerMenu() {
@@ -76,13 +76,12 @@ public class Passenger extends User {
             String password = Tools.input.next();
             if (Tools.stringCheck(password))
                 return;
-            System.out.println("Enter 0 to return menu...\nEnter your new password again:");
+            System.out.print("\nEnter 0 to return menu...\nEnter your new password again:");
             String password1 = Tools.input.next();
             if (Tools.stringCheck(password))
                 return;
             if (password.equals(password1)) {
                 super.password = password;
-                System.out.println("Done");
                 Tools.writeString(passengerPath, 24 + (this.number * 52) , password);
                 break;
             }
@@ -95,13 +94,13 @@ public class Passenger extends User {
     //----------Schedule
     private void schedule() {
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
-        System.out.print("\n--------------------------------------------------------------------------------------");
+        System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < (Tools.getLength(flightPath) / 108); i++) {
-            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
-                    + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                    + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
                     + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
-                    "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
-            System.out.print("\n--------------------------------------------------------------------------------------");
+                    "\t\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
+            System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -153,14 +152,14 @@ public class Passenger extends User {
         if (Tools.stringCheck(destination))
             return;
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
-        System.out.print("\n--------------------------------------------------------------------------------------");
+        System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < Tools.getLength(flightPath) / 108; i++) {
             if (Tools.readString(flightPath, 24 + (108 * i)).equals(origin) && Tools.readString(flightPath, 44 + (108 * i)).equals(destination)) {
-                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
-                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
                         + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
-                        "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
-                System.out.print("\n--------------------------------------------------------------------------------------");
+                        "\t\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
+                System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -188,14 +187,14 @@ public class Passenger extends User {
         if (Tools.integerCheck(day))
             return;
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
-        System.out.print("\n--------------------------------------------------------------------------------------");
+        System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < Tools.getLength(flightPath) / 108; i++) {
             if (Tools.readString(flightPath, 24 + (108 * i)).equals(origin) && Tools.readString(flightPath, 44 + (108 * i)).equals(destination) && Tools.readInteger(flightPath, (64 + (108 * i))) == year && Tools.readInteger(flightPath, 68 + (108 * i)) == month && Tools.readInteger(flightPath, (72 + (108 * i))) == day) {
-                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
-                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
+                System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t\t" + Tools.readString(flightPath, (24 + (108 * i)))
+                        + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
                         + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
-                        "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
-                System.out.print("\n--------------------------------------------------------------------------------------");
+                        "\t\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
+                System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -207,7 +206,7 @@ public class Passenger extends User {
         int num = 0;
         while (true) {
             num = Tools.input.nextInt();
-            if (num >= 0 && num <= Tools.getLength(flightPath) / 108)
+            if (num >= 0 && num <= Tools.getLength(flightPath) / 108 || num == 999)
                 break;
             System.out.println(ColorMethods.RED_BOLD + "use correct number :" + ColorMethods.RESET);
         }
@@ -215,7 +214,7 @@ public class Passenger extends User {
             return;
         if (num == 999) {
             searchSecond();
-            System.out.println("Enter num for booking :");
+            System.out.print("\nEnter num for booking :");
             while (true) {
                 num = Tools.input.nextInt();
                 if (num >= 0 && num <= Tools.getLength(flightPath) / 108)
@@ -253,13 +252,13 @@ public class Passenger extends User {
     //----------Booked
     private void bookedSchedule() {
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
-        System.out.print("\n--------------------------------------------------------------------------------------");
+        System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < (Tools.getLength(path) / 108); i++) {
-            System.out.print("\n" + Tools.readInteger(path, (108 * i)) + "\t" + Tools.readString(path, (4 + (108 * i))) + "\t" + Tools.readString(path, (24 + (108 * i)))
-                    + "\t\t" + Tools.readString(path, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(path, (64 + (108 * i))))
+            System.out.print("\n" + Tools.readInteger(path, (108 * i)) + "\t" + Tools.readString(path, (4 + (108 * i))) + "\t\t" + Tools.readString(path, (24 + (108 * i)))
+                    + "\t\t" + Tools.readString(path, (44 + (108 * i))) + "\t\t" + String.valueOf(Tools.readInteger(path, (64 + (108 * i))))
                     + "\\" + String.valueOf(Tools.readInteger(path, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(path, (72 + (108 * i))) +
-                    "\t\t" + Tools.readString(path, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(path, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(path, (104 + (108 * i))))));
-            System.out.print("\n--------------------------------------------------------------------------------------");
+                    "\t\t\t" + Tools.readString(path, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(path, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(path, (104 + (108 * i))))));
+            System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -335,9 +334,11 @@ public class Passenger extends User {
                     }
                     break;
                 case 2:
+                    Tools.cls();
                     searchFlight();
                     break;
                 case 3:
+                    Tools.cls();
                     booking();
                     try {
                         Thread.sleep(1500);
@@ -346,6 +347,7 @@ public class Passenger extends User {
                     }
                     break;
                 case 4:
+                    Tools.cls();
                     cancel();
                     System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
                     try {
@@ -355,8 +357,9 @@ public class Passenger extends User {
                     }
                     break;
                 case 5:
+                    Tools.cls();
                     bookedSchedule();
-                    System.out.println("\nEnter any char to return");
+                    System.out.print("\nEnter any char to return :");
                     Tools.input.next();
                     break;
                 case 6:

@@ -15,7 +15,7 @@ public class Admin extends User {
 
     //----------Admin Menu
     private void menu() {
-        System.out.println("*************************\n\tADMIN MENU OPTION\n*************************\n\t(1) Add \n\t(2) Update\n\t(3) Remove\n\t(4) Flight Schedule\n\t(0) Sign out");
+        System.out.println("*********************************\n\tADMIN MENU OPTION\n*********************************\n\t(1) Add \n\t(2) Update\n\t(3) Remove\n\t(4) Flight Schedule\n\t(0) Sign out");
     }
 
     private int adminMenu() {
@@ -46,7 +46,7 @@ public class Admin extends User {
 
     //----------Update Menu
     private void updateMenu() {
-        System.out.println("*************************\n\tUPDATE MENU OPTION\n*************************\n\t(1) Origin\n\t(2) Destination\n\t(3) Date\n\t(4) Time\n\t(5) Price\n\t(6) Seats\n\t(7) Update all\n\t(0) EXIT");
+        System.out.println("*********************************\n\tUPDATE MENU OPTION\n*********************************\n\t(1) Origin\n\t(2) Destination\n\t(3) Date\n\t(4) Time\n\t(5) Price\n\t(6) Seats\n\t(7) Update all\n\t(0) EXIT");
     }
 
     //----------Add Airline
@@ -105,7 +105,6 @@ public class Admin extends User {
         String A8 = String.valueOf(A1.charAt(0)).toUpperCase() + String.valueOf(A2.charAt(0)).toUpperCase() + String.valueOf(A3).substring(2, 4) + String.valueOf(A4);
         Flight flight = new Flight(A8, A1, A2, A3, A4, A5, A6, A7, A9, flightPath, num);
         flights.add(flight);
-        Tools.cls();
         System.out.println(ColorMethods.GREEN_BOLD_BRIGHT + "Done..." + ColorMethods.RESET);
         tik++;
     }
@@ -113,13 +112,13 @@ public class Admin extends User {
     //----------Schedule
     private void schedule() {
         System.out.print("\nN\tID\t\tOrigin\t\tDestination\t\tDate\t\t\tTime\t\tPrice\t\tSeats");
-        System.out.print("\n--------------------------------------------------------------------------------------");
+        System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < (Tools.getLength(flightPath) / 108); i++) {
-            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t" + Tools.readString(flightPath, (24 + (108 * i)))
+            System.out.print("\n" + Tools.readInteger(flightPath, (108 * i)) + "\t" + Tools.readString(flightPath, (4 + (108 * i))) + "\t\t" + Tools.readString(flightPath, (24 + (108 * i)))
                     + "\t\t" + Tools.readString(flightPath, (44 + (108 * i))) + "\t\t\t" + String.valueOf(Tools.readInteger(flightPath, (64 + (108 * i))))
                     + "\\" + String.valueOf(Tools.readInteger(flightPath, (68 + (108 * i)))) + "\\" + String.valueOf(Tools.readInteger(flightPath, (72 + (108 * i))) +
                     "\t\t" + Tools.readString(flightPath, (76 + (108 * i))) + "\t\t" + String.valueOf(Tools.readDouble(flightPath, (96 + (108 * i)))) + "\t\t" + String.valueOf(Tools.readInteger(flightPath, (104 + (108 * i))))));
-            System.out.print("\n--------------------------------------------------------------------------------------");
+            System.out.print("\n------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -129,6 +128,7 @@ public class Admin extends User {
         int N = 0;
         do {
             do {
+                Tools.cls();
                 schedule();
                 System.out.print("\nEnter number of flight which you want to edit :");
                 N = Tools.input.nextInt();
@@ -139,7 +139,9 @@ public class Admin extends User {
                 Tools.cls();
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
+            point :
             do {
+                Tools.cls();
                 updateMenu();
                 num = Tools.input.nextInt();
                 switch (num) {
@@ -147,22 +149,22 @@ public class Admin extends User {
                         break;
                     case 1:
                         updateOrigin(N);
-                        continue;
+                        break point;
                     case 2:
                         updateDestination(N);
-                        continue;
+                        break point;
                     case 3:
                         updateDate(N);
-                        continue;
+                        break point;
                     case 4:
                         updateTime(N);
-                        continue;
+                        break point;
                     case 5:
                         updatePrice(N);
-                        continue;
+                        break point;
                     case 6:
                         updateSeat(N);
-                        continue;
+                        break point;
                     case 7:
                         updateOrigin(N);
                         updateDestination(N);
@@ -170,7 +172,7 @@ public class Admin extends User {
                         updateTime(N);
                         updatePrice(N);
                         updateSeat(N);
-                        break;
+                        break point;
                     default:
                         Tools.cls();
                         System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
@@ -192,7 +194,7 @@ public class Admin extends User {
 
     private void updateDestination(int num) {
         Tools.cls();
-        System.out.print("Enter new destination");
+        System.out.print("Enter new destination:");
         String destination = Tools.input.next();
         if (Tools.stringCheck(destination))
             return;
@@ -263,6 +265,7 @@ public class Admin extends User {
     private void remove() {
         int N;
         do {
+            Tools.cls();
             do {
                 schedule();
                 System.out.print("\nEnter number of flight which you want to remove :");
@@ -287,6 +290,10 @@ public class Admin extends User {
                     break;
                 System.out.println(ColorMethods.RED_BOLD + "Please use The correct Number..." + ColorMethods.RESET);
             } while (true);
+            if (num == 2) {
+                remove();
+                return;
+            }
             if (num == 1) {
                 if ((Tools.getLength(flightPath) / 108 )== num) {
                     Tools.setLength(flightPath, Tools.getLength(flightPath) - 108);
@@ -324,6 +331,7 @@ public class Admin extends User {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
+                    Tools.cls();
                     break;
                 case 2:
                     update();

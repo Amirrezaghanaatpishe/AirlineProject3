@@ -12,7 +12,7 @@ public class Account {
 
     //----------Menu
     private void menu() {
-        System.out.println("********************************************\n\tWELCOME TO AIRLINE RESERVATION SYSTEM\n********************************************\n\t(1) Sign in\n\t(2) Sign up\n\t(0) Exit");
+        System.out.println("****************************************************\n\tWELCOME TO AIRLINE RESERVATION SYSTEM\n****************************************************\n\t(1) Sign in\n\t(2) Sign up\n\t(0) Exit");
     }
 
     private int signMenu() {
