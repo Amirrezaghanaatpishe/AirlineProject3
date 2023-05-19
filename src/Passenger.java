@@ -83,6 +83,7 @@ public class Passenger extends User {
             if (password.equals(password1)) {
                 super.password = password;
                 System.out.println("Done");
+                Tools.writeString(passengerPath, 24 + (this.number * 52) , password);
                 break;
             }
             Tools.cls();
