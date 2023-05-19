@@ -40,8 +40,15 @@ public class Account {
     //----------Sign In
     private void signIn() {
         Tools.cls();
+        System.out.print(ColorMethods.PURPLE_BOLD +"-----Guid-----\nUse < 0 > in any  input to return back"+ColorMethods.RESET);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Tools.cls();
         do {
-            System.out.print("\nEnter username :");
+            System.out.print("Enter username :");
             String username = Tools.input.next();
             if (Tools.stringCheck(username))
                 return;
